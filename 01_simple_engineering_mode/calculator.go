@@ -19,6 +19,10 @@ func main()  {
 	case "*":
 		result = A * B
 	case "/":
+		if B == 0{
+			result = -1
+			break
+		}
 		result = A / B
 	default:
 		result = -1
