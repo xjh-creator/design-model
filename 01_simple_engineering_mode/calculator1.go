@@ -1,7 +1,8 @@
 package main
 
 import "fmt"
-//相比于calculator.go,把业务逻辑封装起来，把ta与逻辑界面分开
+//相比于calculator.go,把业务逻辑封装起来，把ta与逻辑界面分开，从而它们之间的耦合度下降。
+//达到容易维护或扩展
 func calculate(A,B int,operate string) int {
 	switch operate {
 	case "+":
