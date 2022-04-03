@@ -2,6 +2,7 @@ package main
 
 import "fmt"
 //在startegy.go的基础上添加一个打折的功能
+//如果要满足两种以上打折方式，这种改动方式就有点繁琐
 
 //总计金额
 var total1 float32
