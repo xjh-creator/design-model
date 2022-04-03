@@ -1,12 +1,10 @@
 package main
 
 import "fmt"
-//运用了策略模式，当这里又存在了一个问题，就是需要客户端来判断用哪个算法
-//所以更好的解决方式是简单工厂模式跟策略模式相结合
+//运用了策略模式与简单工厂模式的结合
+//简单工厂模式中，客户端需要认识两个对象，Cash 和 CashFactory
+//策略模式与简单工厂模式的结合，只需要认识一个对象CashContext，耦合性更加降低
 
-/**
- * 策略接口
- */
 type Cash interface {
 	acceptCash() float32
 }
@@ -16,9 +14,6 @@ type CashSuper struct {
 	money float32
 }
 
-/**
- * CashNormal 极其方法acceptCash就是我们定义的一个策略
- */
 //正常收费
 type CashNormal struct {
 	*CashSuper
@@ -52,17 +47,28 @@ func (c *CashReturn)acceptCash() float32{
 	return c.money
 }
 
-/**
- * CashContext 用来维护一个对Strategy对象的引用
- * CashContext 传入一个具体的策略对象，然后根据策略对象，调用其算法的方法
- */
 type CashContext struct {
-	cs Cash
+	CbxType string
 }
 
+//运用工厂方式来创建对象
+func (c *CashContext)NewCash(total float32) Cash {
+	var cash Cash
+	switch c.CbxType {
+	case "正常收费":
+		cash =  &CashNormal{&CashSuper{money: total}}
+	case "满300返100":
+		cash = &CashReturn{&CashSuper{money: total},300,200}
+	case "打8折":
+		cash = &CashRebate{&CashSuper{money: total},0.8}
+	default:
+		cash = nil
+	}
+	return cash
+}
 
-func (c *CashContext)GetResult() float32 {
-	return c.cs.acceptCash()
+func (c *CashContext)GetResult(total float32) float32 {
+	return c.NewCash(total).acceptCash()
 }
 
 var total float32
@@ -73,26 +79,14 @@ func main()  {
 	for{
 		var A float32
 		var B int
-		var discount string
 		fmt.Println("请输入单价：")
 		fmt.Scanf("%f",&A)
 		fmt.Println("请输入数量：")
 		fmt.Scanf("%d",&B)
 		fmt.Println("请输入打折方式(正常收费 满300减100 打八折)：")
-		fmt.Scanf("%s",&discount)
+		fmt.Scanf("%s",cashContext.CbxType)
 
-		switch discount {
-		case "正常收费":
-			cashContext.cs = &CashNormal{&CashSuper{money: A*float32(B)}}
-		case "满300返100":
-			cashContext.cs = &CashReturn{&CashSuper{money: A*float32(B)},300,200}
-		case "打8折":
-			cashContext.cs = &CashRebate{&CashSuper{money: A*float32(B)},0.8}
-		default:
-			cashContext.cs = nil
-		}
-
-		total += cashContext.GetResult()
+		total += cashContext.GetResult(total)
 		fmt.Println("总计金额为：",total)
 
 		var operate string
