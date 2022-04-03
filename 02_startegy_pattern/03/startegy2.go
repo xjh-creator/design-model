@@ -2,7 +2,9 @@ package main
 
 import "fmt"
 
-//运用简单工厂模式改写startegy1.go
+//运用简单工厂模式改写startegy1.go，
+//缺点：简单工厂模式只是解决了对象的创建问题，但工厂本身包括了所有的收费方式，商城有经常更改打折额度和返利额度，每次更改优惠都会改动工厂，
+//以致代码重新编译部署，这个方式有点糟糕。
 
 type Cash interface {
 	acceptCash() float32
