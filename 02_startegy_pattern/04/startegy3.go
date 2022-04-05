@@ -60,7 +60,6 @@ type CashContext struct {
 	cs Cash
 }
 
-
 func (c *CashContext)GetResult() float32 {
 	return c.cs.acceptCash()
 }
