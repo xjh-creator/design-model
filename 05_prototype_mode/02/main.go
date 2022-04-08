@@ -35,11 +35,13 @@ func (this *Resume) Display() {
 }
 
 func (this *Resume) Clone() *Resume {
-	resume := &Resume{
-		this.PersonalInfo,
-		this.WorkExperience,
-	}
-	return resume
+	//resume := &Resume{
+	//	this.PersonalInfo,
+	//	this.WorkExperience,
+	//}
+	resume := *this
+	//拷贝了一个值，这种写法比new快
+	return &resume
 }
 
 func main() {
@@ -54,6 +56,7 @@ func main() {
 
 	r3 := r1.Clone()
 	r3.SetPersonalInfo("大鸟", "男", "24")
+	r3.SetWorkExperience("1998-2003", "zz公司")
 	fmt.Println("地址1",&r3)
 
 	r1.Display()
