@@ -4,22 +4,21 @@ import (
 	"sync"
 )
 
-var singleton *Singleton
-var lock *sync.Mutex = &sync.Mutex{}
+var (
+	s    *singleton
+	lock = &sync.Mutex{}
+)
 
-type Singleton struct {
-
+type singleton struct {
 }
 
-func GetInstance() *Singleton {
-	if singleton == nil{
+func GetInstance() *singleton {
+	if s == nil {
 		lock.Lock()
 		defer lock.Unlock()
-		if singleton == nil{
-			singleton = &Singleton{}
+		if s == nil {
+			s = &singleton{}
 		}
 	}
-	return singleton
+	return s
 }
-
-

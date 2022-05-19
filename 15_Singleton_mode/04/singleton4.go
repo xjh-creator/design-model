@@ -4,20 +4,17 @@ import (
 	"sync"
 )
 
-var singleton *Singleton
-var once *sync.Once = &sync.Once{}
+var (
+	s    *singleton
+	once = &sync.Once{}
+)
 
-type Singleton struct {
-
+type singleton struct {
 }
 
-func GetInstance() *Singleton {
+func GetInstance() *singleton {
 	once.Do(func() {
-		singleton = &Singleton{}
-
+		s = &singleton{}
 	})
-	return singleton
+	return s
 }
-
-
-

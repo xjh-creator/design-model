@@ -2,15 +2,16 @@ package main
 
 import "fmt"
 
+func init() {
+	s = &singleton{}
+}
+
 var s *singleton
 
 type singleton struct {
 }
 
 func GetInstance() *singleton {
-	if s == nil {
-		s = &singleton{}
-	}
 	return s
 }
 
